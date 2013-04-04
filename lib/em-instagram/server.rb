@@ -1,3 +1,6 @@
+require 'evma_httpserver/response'
+require 'json'
+
 module EventMachine
   class Instagram
     module Server

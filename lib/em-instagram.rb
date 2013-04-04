@@ -1,7 +1,7 @@
-require File.expand_path('../instagram/request', __FILE__)
-require File.expand_path('../instagram/server', __FILE__)
-require File.expand_path('../instagram/api/subscriptions', __FILE__)
-require File.expand_path('../instagram/api/media', __FILE__)
+require File.expand_path('../em-instagram/request', __FILE__)
+require File.expand_path('../em-instagram/server', __FILE__)
+require File.expand_path('../em-instagram/api/subscriptions', __FILE__)
+require File.expand_path('../em-instagram/api/media', __FILE__)
 
 module EventMachine
   class Instagram
@@ -11,19 +11,20 @@ module EventMachine
     BASE_URI = 'https://api.instagram.com'
     PORT = 443
 
-    attr_reader :default_params, :host, :port, :server, :logger, :subscription_queue, :update_callback
+    attr_reader :default_params, :host, :port, :server, :logger, :subscription_queue, :update_callback, :callback_url
 
     def initialize(options = nil)
       @host, @port, @server = [options[:host], options[:port], options[:server]]
       @subscription_queue = EventMachine::Queue.new
       @update_queue = EventMachine::Queue.new
+      @callback_url = options[:callback_url]
       @logger = options[:logger]
       @default_params = {:client_id => options[:client_id], :client_secret => options[:client_secret]}
       update
 
     end
 
-     def fetch(update)
+    def fetch(update)
       case update['object']
       when 'geography'
         fetch_geography update['object_id']

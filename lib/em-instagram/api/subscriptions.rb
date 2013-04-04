@@ -1,13 +1,11 @@
 module EventMachine
   class Instagram
     module Subscriptions
-      def send_subscription(params = {})
-        request :post, "/v1/subscriptions", :body => default_params.merge(params)
-      end
 
       def subscribe_to(options)
-        options = options.merge(:aspect => 'media', :callback_url => CALLBACK_URL)
-        request = send_subscription options.merge(:aspect => 'media', :callback_url => CALLBACK_URL)
+        options = options.merge(:aspect => 'media', :callback_url => self.callback_url)
+        request_body = default_params.merge(:aspect => 'media', :callback_url => self.callback_url).merge(options)
+        request = request(:post, "/v1/subscriptions", :body => request_body)
         request.errback { |error| @logger.debug "subscription error: #{error}"; EventMachine::add_timer(15) { subscribe_to options } }
         request.callback { |response| @logger.debug "next subscription..."; EventMachine::next_tick { subscribe_next } }
       end
@@ -29,7 +27,7 @@ module EventMachine
         if @subscription_queue.empty?
           @logger.debug "subscribed."
         else
-          @subscription_queue.pop { |hash| send_subscription(hash); subscribe_next }
+          @subscription_queue.pop { |hash| subscribe_to(hash); subscribe_next }
         end
       end
     end
