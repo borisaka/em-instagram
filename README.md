@@ -93,7 +93,7 @@ By default, the provided server listens to 0.0.0.0 at port 8080. To change this,
     }
     instagram_connection = EventMachine::Instagram.new(instagram_args)
 
-# Altering the default server
+### Altering the default server
 
 The server provided is deliberately very sparse. It assumes that all requests incoming are instagram requests and treats them accordingly. It is not designed to be used in a production environment, only to allow you to start developing until you know enough about your architecture to develop your own server. For my use of this gem, I wrote a server based off [evma_httpserver](https://github.com/eventmachine/evma_httpserver). Pass it in with the :server argument to the initializer.
 
