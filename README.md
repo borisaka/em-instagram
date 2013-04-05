@@ -12,6 +12,8 @@ If not, just install the gem and require it in your source.
 
 ## Usage
 
+### Setup
+
 By default, em-instagram ships with a basic EventMachine web server with it. This allows you to process the callbacks from the API when you subscribe. We recommend that you replace the 'default' server with one of your own as soon as possible, as this is only provided to make initial development easier.
 
 To set it up, instantiate an EventMachine::Instagram instance
@@ -33,6 +35,25 @@ The basic arguments that the connection requires is the :client_id, :client_secr
 You also need to define an update block. This block is called whenever new media is returned by Instagram, with the serialized JSON from the Instagram API.
 
 Finally, we wrap the server in an EventMachine run block, and boot it up. If your app is already running inside a reactor, there's no need to wrap this code in EM.run.
+
+### Adding Subscriptions
+
+To add a subscription, you call subscribe, and pass it a hash of subscription terms. The gem currently allows subscriptions to tags and geographies.
+
+    subscriptions = [{:object => "tag", :object_id => "apple"},
+    {:object => "geography", :lat => latitude, :lng => longitude, :radius => radius}]
+
+    instagram_args = {
+      :client_id => 'xxxxx',
+      :client_secret => "xxxxx",
+      :callback_url => "www.example.com"
+    }
+    instagram_connection = EventMachine::Instagram.new(instagram_args)
+    instagram_connection.on_update{|media| puts media.inspect}
+    instagram_connection.subscribe(*subscriptions)
+    EventMachine.run do
+      instagram_connection.start_server
+    end
 
 ## Configuration
 
