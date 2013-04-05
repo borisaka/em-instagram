@@ -15,18 +15,18 @@ module EventMachine
 
 
       def fetch_geography(object_id)
-        @logger.debug "fetching #{object_id} updates..."
+        self.logger.debug "fetching #{object_id} updates..."
         # TODO: figure out if min_id parameter would be appropriate for reading recent tagged media
         request = media_by_geography(object_id)
-        request.errback { |error| @logger.debug "fetch error: #{error}";  EventMachine::add_timer(15) { fetch_geography object_id } }
+        request.errback { |error| self.logger.debug "fetch error: #{error}";  EventMachine::add_timer(15) { fetch_geography object_id } }
         request.callback { |media| @update_queue.push(*media) }
       end
 
       def fetch_tag(object_id)
-        @logger.debug "fetching #{object_id} updates..."
+        self.logger.debug "fetching #{object_id} updates..."
         # TODO: figure out if max_id or min_id parameter would be appropriate for reading recent tagged media
         request = media_by_tag(object_id)
-        request.errback { |error| @logger.debug "fetch error: #{error}";  EventMachine::add_timer(15) { fetch_tag object_id } }
+        request.errback { |error| self.logger.debug "fetch error: #{error}";  EventMachine::add_timer(15) { fetch_tag object_id } }
         request.callback { |media| @update_queue.push(*media) }
       end
     end

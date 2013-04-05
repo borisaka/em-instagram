@@ -42,4 +42,9 @@ describe EventMachine::Instagram do
       EventMachine.next_tick{EventMachine.stop_event_loop}
     end
   end
+
+  it "should not throw exceptions if the logger is not present" do
+    @instagram = EventMachine::Instagram.new(:client_id => '1', :client_secret => '2', :callback_url => @callback_url)
+    expect{ @instagram.subscribe_next}.to_not raise_error
+  end
 end

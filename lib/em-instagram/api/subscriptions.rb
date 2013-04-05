@@ -6,8 +6,8 @@ module EventMachine
         options = options.merge(:aspect => 'media', :callback_url => self.callback_url)
         request_body = default_params.merge(:aspect => 'media', :callback_url => self.callback_url).merge(options)
         request = request(:post, "/v1/subscriptions", :body => request_body)
-        request.errback { |error| @logger.debug "subscription error: #{error}"; EventMachine::add_timer(15) { subscribe_to options } }
-        request.callback { |response| @logger.debug "next subscription..."; EventMachine::next_tick { subscribe_next } }
+        request.errback { |error| self.logger.debug "subscription error: #{error}"; EventMachine::add_timer(15) { subscribe_to options } }
+        request.callback { |response| self.logger.debug "next subscription..."; EventMachine::next_tick { subscribe_next } }
       end
 
       def subscriptions(params = {})
@@ -25,9 +25,9 @@ module EventMachine
 
       def subscribe_next
         if @subscription_queue.empty?
-          @logger.debug "subscribed."
+          self.logger.debug "subscribed."
         else
-          @subscription_queue.pop { |hash| subscribe_to(hash); subscribe_next }
+          self.subscription_queue.pop { |hash| subscribe_to(hash); subscribe_next }
         end
       end
     end

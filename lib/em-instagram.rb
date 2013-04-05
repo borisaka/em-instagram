@@ -2,6 +2,7 @@ require File.expand_path('../em-instagram/request', __FILE__)
 require File.expand_path('../em-instagram/server', __FILE__)
 require File.expand_path('../em-instagram/api/subscriptions', __FILE__)
 require File.expand_path('../em-instagram/api/media', __FILE__)
+require File.expand_path('../em-instagram/proxy_logger', __FILE__)
 
 module EventMachine
   class Instagram
@@ -18,7 +19,7 @@ module EventMachine
       @subscription_queue = EventMachine::Queue.new
       @update_queue = EventMachine::Queue.new
       @callback_url = options[:callback_url]
-      @logger = options[:logger]
+      self.logger = options[:logger]
       @default_params = {:client_id => options[:client_id], :client_secret => options[:client_secret]}
       update
 
@@ -31,6 +32,15 @@ module EventMachine
       when 'tag'
         fetch_tag update['object_id']
       end
+    end
+
+    def logger
+      return @logger if @logger
+      ProxyLogger.new
+    end
+
+    def logger=(logger)
+      @logger = logger
     end
 
     def stream(&block)
@@ -48,7 +58,7 @@ module EventMachine
         if @update_callback
           @update_callback.call(item)
         else
-          @logger.debug(item)
+          self.logger.debug(item)
         end
         EventMachine::next_tick { update }
       end
