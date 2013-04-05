@@ -114,3 +114,7 @@ The server provided is deliberately very sparse. It assumes that all requests in
       :callback_url => "www.example.com"
     }
     instagram_connection = EventMachine::Instagram.new(instagram_args)
+
+## Final notes
+
+This gem is in the early stages of development and is targetted at my own need to use the streaming API's in an event driven fashion. Pull requests to add functionality to the gem are more than welcome!
