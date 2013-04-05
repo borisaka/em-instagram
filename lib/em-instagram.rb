@@ -19,6 +19,7 @@ module EventMachine
       @subscription_queue = EventMachine::Queue.new
       @update_queue = EventMachine::Queue.new
       @callback_url = options[:callback_url]
+      @default_stream = Proc.new{|update| self.fetch update}
       self.logger = options[:logger]
       @default_params = {:client_id => options[:client_id], :client_secret => options[:client_secret]}
       update
@@ -65,7 +66,8 @@ module EventMachine
     end
 
     def receive_notification(data)
-      @streams.each { |stream| stream.call(data) }
+      stream_set = @streams.nil? ? [@default_stream] : @streams
+      stream_set.each { |stream| stream.call(data) }
     end
 
     def request(method, path, options = {})

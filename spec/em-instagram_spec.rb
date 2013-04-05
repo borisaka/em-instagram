@@ -47,4 +47,9 @@ describe EventMachine::Instagram do
     @instagram = EventMachine::Instagram.new(:client_id => '1', :client_secret => '2', :callback_url => @callback_url)
     expect{ @instagram.subscribe_next}.to_not raise_error
   end
+
+  it "should use the default stream if no stream is defined" do
+    @instagram.should_receive(:fetch)
+    @instagram.receive_notification("banana")
+  end
 end
