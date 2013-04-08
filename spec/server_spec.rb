@@ -49,6 +49,7 @@ describe EventMachine::Instagram::Server do
     @response.should_receive(:status=).with(202)
     @response.should_receive(:content=).with("Accepted")
     server = EventMachine::ServerStub.new
+    server.stub(:valid_instagram_response? => true)
     server.http_request_method = "POST"
     server.http_post_content = json.to_json
     server.updates = []

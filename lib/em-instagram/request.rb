@@ -10,11 +10,15 @@ module EventMachine
 
     protected
       def process_instagram_response(response)
-        case response.response_header.status
-        when 200
-          succeed JSON.parse(response.response)['data']
-        else
-          fail JSON.parse(response.response)['meta']['error_message']
+        begin
+          case response.response_header.status
+          when 200
+            succeed JSON.parse(response.response)['data']
+          else
+            fail JSON.parse(response.response)['meta']['error_message']
+          end
+        rescue JSON::ParserError
+          fail "Invalid JSON returned"
         end
       end
     end
