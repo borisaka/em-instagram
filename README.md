@@ -1,4 +1,4 @@
-# Eventmachine Instagram
+# Eventmachine Instagram [![Build Status](https://travis-ci.org/mosaicxm/em-instagram.png?branch=master)](https://travis-ci.org/mosaicxm/em-instagram)
 
 This gem provides an interface to the Instagram API which uses EventMachine to interface with it. It is designed for use inside a larger EventMachine based application, and to make the API requests without blocking your reactor.
 
