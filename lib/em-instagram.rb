@@ -1,5 +1,5 @@
 require 'eventmachine'
-require 'em-http-server'
+require 'eventmachine_httpserver'
 
 require File.expand_path('../em-instagram/request', __FILE__)
 require File.expand_path('../em-instagram/server', __FILE__)
