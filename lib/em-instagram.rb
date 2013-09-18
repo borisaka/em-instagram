@@ -1,3 +1,5 @@
+require 'eventmachine'
+
 require File.expand_path('../em-instagram/request', __FILE__)
 require File.expand_path('../em-instagram/server', __FILE__)
 require File.expand_path('../em-instagram/api/subscriptions', __FILE__)
