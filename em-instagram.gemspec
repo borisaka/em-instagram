@@ -21,6 +21,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'eventmachine_httpserver'
   s.add_dependency 'em-http-request'
 
+  s.add_development_dependency "rake"
   s.add_development_dependency "rspec", '~> 2.5.0'
 
   s.files         = `git ls-files`.split("\n")
