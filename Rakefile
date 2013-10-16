@@ -11,14 +11,13 @@ if RUBY_VERSION < '1.9.3'
   RSpec::Core::RakeTask.new(:rcov) do |t|
     t.rcov = true
     t.rcov_opts = "--output coverage/rcov --exclude '^(?!lib)'"
-  #   t.rspec_opts = ["--profile", "--format progress"]
-  #   t.rcov_opts  = "--failure-threshold --rails --exclude test/*,spec/*,features/*,factories/*,gems/*"
-  #   t.verbose    = false
   end
 
   desc 'Default: run specs under rcov.'
   task :default => :rcov
 else
+  RSpec::Core::RakeTask.new(:spec)
+
   desc 'Default: run specs.'
   task :default => :spec
 end

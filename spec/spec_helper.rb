@@ -18,9 +18,10 @@ if RUBY_VERSION >= '1.9.3'
   SimpleCov.start do
     add_filter 'spec'
   end
+else
+  require 'rspec/autorun'
 end
 
-require 'rspec/autorun'
 require 'logger'
 require File.expand_path('../../lib/em-instagram.rb', __FILE__)
 
