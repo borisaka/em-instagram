@@ -6,16 +6,18 @@ Gem::Specification.new do |s|
   s.version     = EventMachine::Instagram::VERSION
   s.platform    = Gem::Platform::RUBY
   s.date        = '2013-04-03'
-  s.authors     = ["Joe Pym"]
-  s.email       = ["joe@joepym.com"]
+  s.authors     = ["Joe Pym", "S. Brent Faulkner"]
+  s.email       = ["joe@joepym.com", "sbfaulkner@gmail.com"]
   s.homepage    = ""
   s.summary     = %q{}
   s.description = %q{}
 
-  s.files = Dir["{lib,spec}/**/*", "[A-Z]*", "init.rb"]
-  s.require_path = "lib"
-
   s.required_rubygems_version = ">= 1.3.4"
+
+  s.files         = `git ls-files`.split("\n")
+  s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
+  s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
+  s.require_paths = ["lib"]
 
   s.add_dependency "eventmachine"
   s.add_dependency 'eventmachine_httpserver'
@@ -24,9 +26,10 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency "rake"
   s.add_development_dependency "rspec"
-
-  s.files         = `git ls-files`.split("\n")
-  s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
-  s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
-  s.require_paths = ["lib"]
+  if RUBY_VERSION < '1.9.3'
+    s.add_development_dependency('rcov')
+  else
+    s.add_development_dependency('simplecov')
+    s.add_development_dependency('simplecov-rcov')
+  end
 end

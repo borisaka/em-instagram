@@ -1,3 +1,6 @@
 *.gem
 .rspec
 Gemfile.lock
+.bundle
+coverage
+rspec.html

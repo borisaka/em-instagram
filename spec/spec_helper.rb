@@ -5,8 +5,22 @@
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 require 'rubygems'
-require 'bundler'
-Bundler.require(:default)
+
+if RUBY_VERSION >= '1.9.3'
+  require 'simplecov'
+  require 'simplecov-rcov'
+
+  SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
+    SimpleCov::Formatter::HTMLFormatter,
+    SimpleCov::Formatter::RcovFormatter,
+  ]
+
+  SimpleCov.start do
+    add_filter 'spec'
+  end
+end
+
+require 'rspec/autorun'
 require 'logger'
 require File.expand_path('../../lib/em-instagram.rb', __FILE__)
 
