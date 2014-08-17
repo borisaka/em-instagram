@@ -1,7 +1,7 @@
 module EventMachine
   class Instagram
     class Request
-      include Deferrable
+      include EventMachine::Deferrable
 
       def initialize(connection)
         connection.errback { |response| fail response.error }

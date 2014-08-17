@@ -4,3 +4,4 @@ Gemfile.lock
 .bundle
 coverage
 rspec.html
+.idea
