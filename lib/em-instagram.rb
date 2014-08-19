@@ -10,11 +10,14 @@ require File.expand_path('../em-instagram/proxy_logger', __FILE__)
 
 module EventMachine
   class Instagram
+    attr_accessor :default_params
     include Subscriptions
     include Media
 
     BASE_URI = 'https://api.instagram.com'
     PORT = 443
+
+
 
     attr_reader :default_params, :host, :port, :server, :logger, :subscription_queue, :update_callback, :callback_url
 
@@ -80,8 +83,8 @@ module EventMachine
     end
 
     def start_server(&block)
-      @host ||= '0.0.0.0'
-      @port ||= 8080
+      @host ||= @host
+      @port ||= @port
       @server ||= Server
       EventMachine.start_server(host, port, server) do |connection|
         connection.subscriber = self

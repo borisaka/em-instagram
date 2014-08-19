@@ -20,7 +20,7 @@ module EventMachine
         when 'GET'
           params = CGI::parse(@http_query_string)
           response.status = 200
-          response.content = params['hub.challenge']
+          response.content = params['hub.challenge'][0]
         when 'POST'
           if valid_instagram_response?
             begin
@@ -57,8 +57,9 @@ module EventMachine
         else
           nil
         end
-        digest = OpenSSL::Digest::Digest.new('sha1')
-        verify_signature = OpenSSL::HMAC.hexdigest(digest, self.subscriber.client_secret, @http_post_content)
+        digest = OpenSSL::Digest.new('sha1')
+        #self.subscriber.logger.debug("client_secregt is #{self.subscriber.client_secret}")
+        verify_signature = OpenSSL::HMAC.hexdigest(digest, self.subscriber.default_params[:client_secret], @http_post_content)
         sig && sig == verify_signature
       end
 

@@ -18,8 +18,7 @@ module EventMachine
             fail JSON.parse(response.response)['meta']['error_message']
           end
         rescue JSON::ParserError
-          self.logger.error ("Error with response: #{response.response.inspect}")
-          fail "Invalid JSON returned"
+          fail "Invalid JSON returned:  #{response.response.inspect}"
         end
       end
     end
